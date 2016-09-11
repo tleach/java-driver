@@ -1,5 +1,10 @@
 ## Changelog
 
+### 3.1.1 (in progress)
+
+- [bug] JAVA-1286: Support setting and retrieving udt fields in QueryBuilder.
+
+
 ### 3.1.0
 
 - [new feature] JAVA-1153: Add PER PARTITION LIMIT to Select QueryBuilder.

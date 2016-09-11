@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 // Static utilities private to the query builder
 abstract class Utils {
 
-    private static final Pattern cnamePattern = Pattern.compile("\\w+(?:\\[.+\\])?");
+    private static final Pattern cnamePattern = Pattern.compile("\\w+(?:\\[.+\\]|\\.\\w+)?");
 
     static StringBuilder joinAndAppend(StringBuilder sb, CodecRegistry codecRegistry, String separator, List<? extends Appendeable> values, List<Object> variables) {
         for (int i = 0; i < values.size(); i++) {
