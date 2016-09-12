@@ -1,5 +1,10 @@
 ## Changelog
 
+### 3.1.1 (in progress)
+
+- [improvement] JAVA-1287: Add CDC to TableOptionsMetadata and Schema Builder.
+
+
 ### 3.1.0
 
 - [new feature] JAVA-1153: Add PER PARTITION LIMIT to Select QueryBuilder.
