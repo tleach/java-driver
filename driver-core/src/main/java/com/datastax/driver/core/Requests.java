@@ -221,7 +221,10 @@ class Requests {
 
         @Override
         public String toString() {
-            return "EXECUTE " + statementId + " (" + options + ')';
+            if (resultMetadataId != null)
+                return "EXECUTE preparedId: " + statementId + " resultMetadataId: " + resultMetadataId + " (" + options + ')';
+            else
+                return "EXECUTE preparedId: " + statementId + " (" + options + ')';
         }
     }
 
