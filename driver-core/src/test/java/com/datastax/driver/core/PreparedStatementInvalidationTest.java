@@ -23,9 +23,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static com.datastax.driver.core.Assertions.assertThat;
-import static com.datastax.driver.core.CreateCCM.TestMode.PER_CLASS;
 
-@CreateCCM(PER_CLASS)
 @CassandraVersion(major = 3.12)
 public class PreparedStatementInvalidationTest extends CCMTestsSupport {
 

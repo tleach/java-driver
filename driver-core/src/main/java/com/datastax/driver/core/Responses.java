@@ -384,10 +384,9 @@ class Responses {
                     int columnCount = body.readInt();
 
                     MD5Digest resultMetadataId = null;
-                    if (flags.contains(Flag.METADATA_CHANGED))
-                    {
-                        assert protocolVersion == ProtocolVersion.V5 : "MetadataChanged flag is supported starting from v5";
-                        assert !flags.contains(Flag.NO_METADATA) : "MetadataChanged and NoMetadata are mutually exclusive flags";
+                    if (flags.contains(Flag.METADATA_CHANGED)) {
+                        assert protocolVersion == ProtocolVersion.V5 : "METADATA_CHANGED flag is supported starting from v5";
+                        assert !flags.contains(Flag.NO_METADATA) : "METADATA_CHANGED and NO_METADATA are mutually exclusive flags";
                         resultMetadataId = MD5Digest.wrap(CBUtil.readBytes(body));
                     }
 
