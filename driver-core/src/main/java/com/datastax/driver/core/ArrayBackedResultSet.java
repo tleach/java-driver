@@ -66,15 +66,14 @@ abstract class ArrayBackedResultSet implements ResultSet {
                         statement = ((StatementWrapper) statement).getWrappedStatement();
                     }
                     assert statement instanceof BoundStatement;
-                    columnDefs = ((BoundStatement) statement).statement.getPreparedId().getResultSetMetadata();
+                    columnDefs = ((BoundStatement) statement).statement.getPreparedId().resultSetMetadata.variables;
                     assert columnDefs != null;
                 } else {
                     columnDefs = r.metadata.columns;
-                    if (statement instanceof BoundStatement)
-                    {
+                    if (statement instanceof BoundStatement) {
                         assert r.metadata.metadataId != null : "Metadata changed, but MetadataId is not supplied";
                         BoundStatement bs = ((BoundStatement) statement);
-                        bs.preparedStatement().getPreparedId().swap(r.metadata.metadataId, r.metadata.columns);
+                        bs.preparedStatement().getPreparedId().resultSetMetadata = new PreparedId.PreparedMetadata(r.metadata.metadataId, r.metadata.columns);
                     }
                 }
 

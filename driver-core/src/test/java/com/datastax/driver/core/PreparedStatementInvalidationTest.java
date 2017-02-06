@@ -46,18 +46,18 @@ public class PreparedStatementInvalidationTest extends CCMTestsSupport {
     public void should_update_statement_id_when_metadata_changed() {
         // given
         PreparedStatement ps = session().prepare("SELECT * FROM PreparedStatementInvalidationTest WHERE a = ?");
-        MD5Digest idBefore = ps.getPreparedId().getResultMetadataId();
+        MD5Digest idBefore = ps.getPreparedId().resultSetMetadata.id;
         // when
         session().execute("ALTER TABLE PreparedStatementInvalidationTest ADD d int");
         BoundStatement bs = ps.bind(1);
         ResultSet rows = session().execute(bs);
         // then
-        MD5Digest idAfter = ps.getPreparedId().getResultMetadataId();
+        MD5Digest idAfter = ps.getPreparedId().resultSetMetadata.id;
         assertThat(idBefore).isNotEqualTo(idAfter);
-        assertThat(ps.getPreparedId().getResultSetMetadata())
+        assertThat(ps.getPreparedId().resultSetMetadata.variables)
                 .hasSize(4)
                 .containsVariable("d", DataType.cint());
-        assertThat(bs.preparedStatement().getPreparedId().getResultSetMetadata())
+        assertThat(bs.preparedStatement().getPreparedId().resultSetMetadata.variables)
                 .hasSize(4)
                 .containsVariable("d", DataType.cint());
         assertThat(rows.getColumnDefinitions())
@@ -75,8 +75,8 @@ public class PreparedStatementInvalidationTest extends CCMTestsSupport {
         PreparedStatement ps1 = session1.prepare("SELECT * FROM PreparedStatementInvalidationTest WHERE a = ?");
         PreparedStatement ps2 = session2.prepare("SELECT * FROM PreparedStatementInvalidationTest WHERE a = ?");
 
-        MD5Digest id1a = ps1.getPreparedId().getResultMetadataId();
-        MD5Digest id2a = ps2.getPreparedId().getResultMetadataId();
+        MD5Digest id1a = ps1.getPreparedId().resultSetMetadata.id;
+        MD5Digest id2a = ps2.getPreparedId().resultSetMetadata.id;
 
         ResultSet rows1 = session1.execute(ps1.bind(1));
         ResultSet rows2 = session2.execute(ps2.bind(1));
@@ -97,16 +97,16 @@ public class PreparedStatementInvalidationTest extends CCMTestsSupport {
         rows1 = session1.execute(ps1.bind(1));
         rows2 = session2.execute(ps2.bind(1));
 
-        MD5Digest id1b = ps1.getPreparedId().getResultMetadataId();
-        MD5Digest id2b = ps2.getPreparedId().getResultMetadataId();
+        MD5Digest id1b = ps1.getPreparedId().resultSetMetadata.id;
+        MD5Digest id2b = ps2.getPreparedId().resultSetMetadata.id;
 
         assertThat(id1a).isNotEqualTo(id1b);
         assertThat(id2a).isNotEqualTo(id2b);
 
-        assertThat(ps1.getPreparedId().getResultSetMetadata())
+        assertThat(ps1.getPreparedId().resultSetMetadata.variables)
                 .hasSize(4)
                 .containsVariable("d", DataType.cint());
-        assertThat(ps2.getPreparedId().getResultSetMetadata())
+        assertThat(ps2.getPreparedId().resultSetMetadata.variables)
                 .hasSize(4)
                 .containsVariable("d", DataType.cint());
         assertThat(rows1.getColumnDefinitions())

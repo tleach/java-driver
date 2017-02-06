@@ -19,38 +19,37 @@ package com.datastax.driver.core;
  * Identifies a PreparedStatement.
  */
 public class PreparedId {
+
     // This class is mostly here to group PreparedStatement data that are need for
     // execution but that we don't want to expose publicly (see JAVA-195)
-    final MD5Digest id;
-
-    final ColumnDefinitions metadata;
-
-    private volatile MD5Digest resultMetadataId;
-    private volatile ColumnDefinitions resultSetMetadata;
 
     final int[] routingKeyIndexes;
+
     final ProtocolVersion protocolVersion;
 
-    PreparedId(MD5Digest id, MD5Digest resultMetadataId, ColumnDefinitions metadata, ColumnDefinitions resultSetMetadata, int[] routingKeyIndexes, ProtocolVersion protocolVersion) {
-        this.id = id;
-        this.resultMetadataId = resultMetadataId;
-        this.metadata = metadata;
+    final PreparedMetadata boundValuesMetadata;
+
+    volatile PreparedMetadata resultSetMetadata;
+
+    PreparedId(PreparedMetadata boundValuesMetadata, PreparedMetadata resultSetMetadata, int[] routingKeyIndexes, ProtocolVersion protocolVersion) {
+        assert boundValuesMetadata != null && resultSetMetadata != null;
+        this.boundValuesMetadata = boundValuesMetadata;
         this.resultSetMetadata = resultSetMetadata;
         this.routingKeyIndexes = routingKeyIndexes;
         this.protocolVersion = protocolVersion;
     }
 
-    public void swap(MD5Digest metadataId, ColumnDefinitions resultSetMetadata)
-    {
-        this.resultMetadataId = metadataId;
-        this.resultSetMetadata = resultSetMetadata;
-    }
+    static class PreparedMetadata {
 
-    public MD5Digest getResultMetadataId() {
-        return resultMetadataId;
-    }
+        // these fields can only be null for resultset metdatada
+        // of non-SELECT statements
 
-    public ColumnDefinitions getResultSetMetadata() {
-        return resultSetMetadata;
+        final MD5Digest id;
+        final ColumnDefinitions variables;
+
+        PreparedMetadata(MD5Digest id, ColumnDefinitions variables) {
+            this.id = id;
+            this.variables = variables;
+        }
     }
 }
