@@ -20,7 +20,7 @@ package com.datastax.driver.core;
  */
 public class PreparedId {
 
-    // This class is mostly here to group PreparedStatement data that are need for
+    // This class is mostly here to group PreparedStatement data that are needed for
     // execution but that we don't want to expose publicly (see JAVA-195)
 
     final int[] routingKeyIndexes;
@@ -29,20 +29,20 @@ public class PreparedId {
 
     final PreparedMetadata boundValuesMetadata;
 
+    // can change over time, see JAVA-1196, JAVA-420
     volatile PreparedMetadata resultSetMetadata;
 
     PreparedId(PreparedMetadata boundValuesMetadata, PreparedMetadata resultSetMetadata, int[] routingKeyIndexes, ProtocolVersion protocolVersion) {
-        assert boundValuesMetadata != null && resultSetMetadata != null;
+        assert boundValuesMetadata != null;
+        assert resultSetMetadata != null;
         this.boundValuesMetadata = boundValuesMetadata;
         this.resultSetMetadata = resultSetMetadata;
         this.routingKeyIndexes = routingKeyIndexes;
         this.protocolVersion = protocolVersion;
     }
 
-    static class PreparedMetadata {
 
-        // these fields can only be null for resultset metdatada
-        // of non-SELECT statements
+    static class PreparedMetadata {
 
         final MD5Digest id;
         final ColumnDefinitions variables;

@@ -573,7 +573,9 @@ class SessionManager extends AbstractSession {
             if (protocolVersion.compareTo(ProtocolVersion.V4) < 0)
                 bs.ensureAllSet();
 
-            boolean skipMetadata = protocolVersion != ProtocolVersion.V1 && bs.statement.getPreparedId().resultSetMetadata.id != null;
+            // skip resultset metadata if version > 1 (otherwise this feature is not supported)
+            // and if we already have metadata for the prepared statement being executed.
+            boolean skipMetadata = protocolVersion != ProtocolVersion.V1 && bs.statement.getPreparedId().resultSetMetadata.variables != null;
             Requests.QueryProtocolOptions options = new Requests.QueryProtocolOptions(Message.Request.Type.EXECUTE,
                     consistency, Arrays.asList(bs.wrapper.values), Collections.<String, ByteBuffer>emptyMap(), skipMetadata,
                     fetchSize, usedPagingState, serialConsistency, defaultTimestamp);

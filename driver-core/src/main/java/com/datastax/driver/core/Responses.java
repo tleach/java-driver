@@ -363,7 +363,7 @@ class Responses {
                 final ColumnDefinitions columns; // Can be null if no metadata was asked by the query
                 final ByteBuffer pagingState;
                 final int[] pkIndices;
-                final MD5Digest metadataId;
+                final MD5Digest metadataId; // only present if the flag METADATA_CHANGED is set (ROWS response only)
 
                 private Metadata(MD5Digest metadataId, int columnCount, ColumnDefinitions columns, ByteBuffer pagingState, int[] pkIndices) {
                     this.metadataId = metadataId;
